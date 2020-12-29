@@ -5,6 +5,7 @@ import Radium, {StyleRoot} from 'radium';
 import { ArrowBack, ArrowBackIosTwoTone, ArrowForwardIosTwoTone, ArrowForwardTwoTone } from '@material-ui/icons';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { myStyles } from '../global/gbvars';
+//TODO: component this to npm
 const styles = {
     fadeIn: {
     animation: 'x 1s',
@@ -25,28 +26,54 @@ function RenderImages(props){
     return(
         props.images.map((item,index)=>{
             if(index===props.slide){
-                return(
-                    <StyleRoot>
-                        <div className="test" style={props.direction===true ? (styles.fadeInRight):(styles.fadeInLeft)}>
-                            <Box style={
-                                {
-                                    width:'100%',
-                                    height:'50vh',
-                                    backgroundImage:`url(${item.url})`,
-                                    backgroundRepeat:'no-repeat',
-                                    backgroundPosition:'center center',
-                                    
-                                    backgroundSize:'cover',
+                if(item.url){
+                    return(
+                        <StyleRoot>
+                            <div style={props.direction===true ? (styles.fadeInRight):(styles.fadeInLeft)}>
+                                <Box style={
+                                    {
+                                        width:'100%',
+                                        height:'50vh',
+                                        backgroundImage:`url(${item.url})`,
+                                        backgroundRepeat:'no-repeat',
+                                        backgroundPosition:'center center',
+                                        
+                                        backgroundSize:'cover',
+                                    }
                                 }
-                            }
-                            boxShadow={3}
-                            borderRadius='3vmin'
-                            >
-                             
-                            </Box>
-                        </div>
-                      </StyleRoot>
-                )
+                                boxShadow={3}
+                                borderRadius='3vmin'
+                                >
+                                 
+                                </Box>
+                            </div>
+                          </StyleRoot>
+                    )
+                }
+                else{
+                    return(
+                        <StyleRoot>
+                            <div style={props.direction===true ? (styles.fadeInRight):(styles.fadeInLeft)}>
+                                <Box style={
+                                    {
+                                        width:'100%',
+                                        height:'50vh',
+                                        backgroundImage:`url(${item})`,
+                                        backgroundRepeat:'no-repeat',
+                                        backgroundPosition:'center center',
+                                        
+                                        backgroundSize:'cover',
+                                    }
+                                }
+                                boxShadow={3}
+                                borderRadius='3vmin'
+                                >
+                                 
+                                </Box>
+                            </div>
+                          </StyleRoot>
+                    )
+                }
             }else{
                 return('')
             }
@@ -90,7 +117,8 @@ export function SlideShow(props){
     }
     
     useEffect(() => {
-        let inter=setInterval(()=>{            
+        let inter=setInterval(()=>{  
+            //TODO:edit
             setSlide(state=>{
                 if(state+1<images.length)
                 {
@@ -109,21 +137,34 @@ export function SlideShow(props){
     const classes=myStyles()
     if(images){
         return(
-            <div style={{padding:'2vmin',border:"1px solid black",borderRadius:'3vmin',overflowX:'hidden'}}>
+            <div>
                 <Grid dir='rtl' container>
                     <Grid style={{width:'5%'}} item>
-                        <Button onClick={handleSlideForward} >
-                            <ArrowForwardIosTwoTone/>
-                        </Button>
+                        {
+                            props.disNavButton ? 
+                            (
+                                ''
+                            ):(
+                                <Button style={{height:'100%'}} onClick={handleSlideForward} >
+                                    <ArrowForwardIosTwoTone/>
+                                </Button>
+                            )
+                        }
+                        
                     </Grid>
                     <Grid style={{width:'90%'}} item>
                         <RenderImages direction={direction} slide={slide} images={props.images}/>
 
                     </Grid>
                     <Grid style={{width:'5%'}} item>
-                        <Button onClick={handleSlideBackward} >
-                            <ArrowBackIosTwoTone/>
-                        </Button>
+                        {
+                            props.disNavButton ? (''):(
+                                <Button style={{height:'100%'}} onClick={handleSlideBackward} >
+                                    <ArrowBackIosTwoTone/>
+                                </Button>
+                            )
+                        }
+                        
                     </Grid>
                     
                 </Grid>
