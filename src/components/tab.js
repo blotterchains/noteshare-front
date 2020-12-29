@@ -7,7 +7,7 @@ import { AddShoppingCartOutlined, AttachMoney, Email, MonetizationOnRounded, Spe
 import { useHistory } from 'react-router-dom';
 const styles = {
     fadeIn: {
-    animation: 'x 1s',
+    animation: 'x 3s',
     animationName: Radium.keyframes(fadeIn, 'fadeIn')
   },
   fadeInRight:{
@@ -49,7 +49,6 @@ function RenderBooks(props){
                     
                 </Box>
             </Grid>
-           
         )
     }))
 }
