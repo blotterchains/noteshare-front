@@ -42,7 +42,6 @@ export default function TopNav() {
     >
         <BottomNavigationAction onClick={()=>handleGotoLink('profile')}  icon={<PersonOutline/>} />
         <BottomNavigationAction onClick={()=>handleGotoLink('checkout')} icon={<ShopOutlined/>}  />
-        <BottomNavigationAction onClick={()=>handleGotoLink('search')} icon={<SearchOutlined/>}  /> 
  
         <BottomNavigationAction onClick={()=>handleGotoLink('')} classes={{selected:classes1.buttonSelected}} icon={<img width="200vw" src={logo.default} />} />
     <BottomNavigationAction onClick={()=>handleGotoLink('book')} classes={{selected:classes1.buttonSelected}} label="کتاب"  />
