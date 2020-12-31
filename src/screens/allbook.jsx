@@ -40,23 +40,24 @@ export function AllBook(props){
     useEffect(() => {
         handleLast();
         let scroll=0;
-        let listener=window.addEventListener('scroll',()=>{
+        let timer=null
+        window.addEventListener('scroll',()=>{
             const last = document.getElementById("end");
             
+            if(scroll+600<window.scrollY && window.scrollY>last.offsetTop-(last.offsetTop-window.scrollMaxY)*2-(last.offsetTop-window.scrollMaxY)/2){
 
-            setTimeout(()=>{
+                timer=setTimeout(()=>{
                 console.log(window.scrollY,last.offsetTop-(last.offsetTop-window.scrollMaxY)*2-(last.offsetTop-window.scrollMaxY)/2)
-                if(scroll!==window.scrollY && window.scrollY>last.offsetTop-(last.offsetTop-window.scrollMaxY)*2-(last.offsetTop-window.scrollMaxY)/2){
                     // 
-                    scroll=window.scrollY;
+                    
                     // alert('aha')
                     handleLast()
-                }
-            },1000)   
-            
+                
+            },1000)
+            }
+            scroll=window.scrollY;
         })
         return () => {
-            listener.removeListener()
         }
     }, [])
    
