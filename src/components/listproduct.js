@@ -1,10 +1,11 @@
 import { Avatar, Box, Button, Grid } from '@material-ui/core';
-import { AddShoppingCartOutlined, Edit, Visibility } from '@material-ui/icons';
+import { AddShoppingCartOutlined, ArrowDownward, Edit, Visibility } from '@material-ui/icons';
 import { Skeleton } from '@material-ui/lab';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import {myStyles} from '../global/gbvars'
 import { EditBook } from '../screens/userpanel';
+import { BuyButton } from './buttons';
 import FullScreenDialog from './dialogs';
 export function ProductPlaceHolder(props){
     if(props.placeholder){
@@ -55,14 +56,14 @@ export function ProductList(props){
                                     {item.price!=='free' ? (`قیمت:${item.price}تومان`):('قیمت:رایگان!')}
                                 </p>
                                 <Grid spacing={2} container>
-                                    {props.panel ? (''):(
+                                    {props.panel ? (
+                                        ''
+                                    ):(
                                          <Grid item>
-                                         <Button className={classes.warningFonts} variant='outlined' color='secondary'>
-                                                 <AddShoppingCartOutlined/>
-                                         </Button>
+                                         <BuyButton book={item}/>
                                      </Grid>
                                     )}
-                                   
+                                    
                                     <Grid item>
                                         <Button 
                                         onClick={()=>history.push(`/${item.owner.username}/${item.hash}/book`)}
@@ -83,7 +84,7 @@ export function ProductList(props){
                             </Grid>
                             <Grid item>
                                 <p className={classes.descriptionFonts}>
-                                    {item.description}
+                                    {item.littledesc}
                                 </p>
                             </Grid>
                         </Grid>                        
