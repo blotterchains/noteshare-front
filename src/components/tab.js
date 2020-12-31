@@ -5,6 +5,7 @@ import { Box, Button, Divider, Grid } from '@material-ui/core';
 import { myStyles } from '../global/gbvars';
 import { AddShoppingCartOutlined, AttachMoney, Email, MonetizationOnRounded, SpeakerPhone } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
+import { BuyButton } from './buttons';
 const styles = {
     fadeIn: {
     animation: 'x 3s',
@@ -41,11 +42,7 @@ function RenderBooks(props){
                     <p className={classes.descriptionFonts} >
                        {item.name}
                     </p>
-                    <Button variant='outlined' color='secondary'>
-                        <p className={classes.warningFonts}>
-                            تومان {item.price} <AddShoppingCartOutlined/>
-                        </p>
-                    </Button>
+                    <BuyButton book={item}/>
                     
                 </Box>
             </Grid>
