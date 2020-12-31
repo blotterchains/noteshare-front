@@ -43,33 +43,38 @@ export const borderRadius='3vmin';
 export const animationStyles = {
     fadeIn: {
     animation: 'x 1s',
-    animationName: Radium.keyframes(fadeIn, 'fadeIn')
+    animationName: Radium.keyframes(fadeIn, 'fadeIn'),
+    overflowX:'hidden'
   },
   fadeInRight:{
     animation: 'x 1s',
-    animationName: Radium.keyframes(fadeInRight, 'fadeInRight')
+    animationName: Radium.keyframes(fadeInRight, 'fadeInRight'),
+    overflowX:'hidden'
   },
   fadeInLeft:{
     animation: 'x 1s',
-    animationName: Radium.keyframes(fadeInLeft, 'fadeInLeft')
+    animationName: Radium.keyframes(fadeInLeft, 'fadeInLeft'),
+    overflowX:'hidden'
   },
   fadeInUp:{
       animation:'x 1s',
-      animationName:Radium.keyframes(fadeInUp,'fadeInUp')
+      animationName:Radium.keyframes(fadeInUp,'fadeInUp'),
+      overflowX:'hidden'
   },
   fadeInUp2S:{
     animation:'x 2s',
-    animationName:Radium.keyframes(fadeInUp,'fadeInUp')
+    animationName:Radium.keyframes(fadeInUp,'fadeInUp'),
+    overflowX:'hidden'
     },
     fadeInUp3S:{
         animation:'x 3s',
-        animationName:Radium.keyframes(fadeInUp,'fadeInUp')
+        animationName:Radium.keyframes(fadeInUp,'fadeInUp'),
+        overflowX:'hidden'
     }
 }
 export const api="http://localhost:5000/api"
 const upload='http://localhost:5000/uploader'
 export const fetchapiWithotToken=(data,action)=>{
-    console.log(JSON.stringify(data))
     return(
         fetch(api,
             {
