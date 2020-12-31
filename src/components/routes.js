@@ -8,6 +8,7 @@ import {ActiveNewAcc} from '../screens/activeNewAcc.jsx';
 import {UserPanel} from '../screens/userpanel.jsx';
 import TopNav, { TopNavRight } from './topnav';
 import { ProductShow } from '../screens/productShow.jsx';
+import { InOrder } from '../screens/inOrder.jsx';
 const useStyles=makeStyles({
     root:{
         width: '50%'
@@ -32,7 +33,11 @@ const screens=[
     },
     {
         path:'/profile',
-        render:<UserPanel />
+        render:<UserPanel/>
+    },
+    {
+        path:'/order',
+        render:<InOrder/>
     }
 ]
 export function Routes(){
