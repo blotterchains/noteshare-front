@@ -22,7 +22,7 @@ export function AllBook(props){
         fetchapiWithotToken({limit:10,name:searchText},'find-books')
         .then(response=>setSearchList(response))
     }
-    const handleLast=()=>{
+    const handleLast=(page)=>{
         fetchapiWithotToken({limit:10,page:page},'find-books')
         .then(response=>{
             response.map((item,index)=>{
@@ -38,24 +38,27 @@ export function AllBook(props){
         })
     }
     useEffect(() => {
-        handleLast();
+        handleLast(page);
         let scroll=0;
         let timer=null
         window.addEventListener('scroll',()=>{
             const last = document.getElementById("end");
-            
-            if(scroll+600<window.scrollY && window.scrollY>last.offsetTop-(last.offsetTop-window.scrollMaxY)*2-(last.offsetTop-window.scrollMaxY)/2){
+            console.log()
 
-                timer=setTimeout(()=>{
-                console.log(window.scrollY,last.offsetTop-(last.offsetTop-window.scrollMaxY)*2-(last.offsetTop-window.scrollMaxY)/2)
-                    // 
+            if(window.scrollY>last.offsetTop-(last.offsetTop-window.scrollMaxY)*2-(last.offsetTop-window.scrollMaxY)/2){
+                if(scroll+600<window.scrollY){
+                    timer=setTimeout(()=>{
+                        // 
+                        
+                        // alert('aha')
+                        handleLast(page+1)
+                        page++
+                        scroll=window.scrollY
                     
-                    // alert('aha')
-                    handleLast()
+                },1000)
+                }
                 
-            },1000)
             }
-            scroll=window.scrollY;
         })
         return () => {
         }
