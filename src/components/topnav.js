@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { PersonOutline, SearchOutlined, ShopOutlined } from '@material-ui/icons';
 import {myStyles} from '../global/gbvars';
 import { Grid } from '@material-ui/core';
+import { States } from './states';
 
 const useStyles = makeStyles({
   root: {
@@ -30,8 +31,21 @@ export default function TopNav() {
   const handleGotoLink=(value)=>{
       history.push('/'+value)
   }
+  function Shop(props){
+    return(
+      <div className={classes1.warningFonts} style={{borderRadius:'100vmin'}}>
+        <ShopOutlined/>
+            {props.orders}
+      </div>
+    )
+  }
+  let state=null;
   return (
-    <BottomNavigation
+    <States.Consumer>
+      {(states)=>{
+        console.log(states)
+        return(
+          <BottomNavigation
       value={value}
       onChange={(event, newValue) => {
         setValue(newValue);
@@ -40,19 +54,25 @@ export default function TopNav() {
       showLabels
       className={classes1.root}
     >
+      {}
         <BottomNavigationAction onClick={()=>handleGotoLink('profile')}  icon={<PersonOutline/>} />
-        <BottomNavigationAction onClick={()=>handleGotoLink('order')} icon={<ShopOutlined/>}  />
+        <BottomNavigationAction onClick={()=>handleGotoLink('order')} icon={<Shop orders={JSON.parse(localStorage['checkout']).length}/>} />
  
         <BottomNavigationAction onClick={()=>handleGotoLink('')} classes={{selected:classes1.buttonSelected}} icon={<img width="200vw" src={logo.default} />} />
     <BottomNavigationAction onClick={()=>handleGotoLink('book')} classes={{selected:classes1.buttonSelected}} label="کتاب"  />
-    <BottomNavigationAction onClick={()=>handleGotoLink('notes')} classes={{selected:classes1.buttonSelected}} label="جزوه"  />
-    <BottomNavigationAction onClick={()=>handleGotoLink('vcbooks')} classes={{selected:classes1.buttonSelected}} label="کتاب صوتی"  /> 
+    <BottomNavigationAction onClick={()=>handleGotoLink('note')} classes={{selected:classes1.buttonSelected}} label="جزوه"  />
+    <BottomNavigationAction onClick={()=>handleGotoLink('vcbook')} classes={{selected:classes1.buttonSelected}} label="کتاب صوتی"  /> 
     
     
     
         
     
     </BottomNavigation>
+        )
+        }
+      }
+    </States.Consumer>
+    
   );
 }
 export function TopNavRight(){
