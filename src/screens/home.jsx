@@ -23,6 +23,9 @@ export function Home(props){
         {title:'do matn',url:'https://www.mizanonline.com/files/fa/news_albums/630650/31717/resized/resized_2635074_518.jpg'},
         {title:'sematn',url:'https://cdn01.zoomit.ir/2019/1/18652e96-8c7d-4f88-a671-767bfe705751.jpg?w=768'}
     ]);
+    const [background1,setbackgroud1]=React.useState([
+        {title:'yek matn',url:'http://www.acefurniture.uk.com/wp-content/uploads/2015/10/special-offers-298x300.png'},
+    ])
     const [books,setBooks]=React.useState([
         {"_id" : 1, "0" : "", "author" : "", "pages" : 0, "" : "", "rank" : "", "littledesc" : "", "owner" : { "_id" : "1", "username" : "wizif" }, "price" : 0, "type" : "", "pic" : "" },
         {"_id" : 1, "0" : "", "author" : "", "pages" : 0, "" : "", "rank" : "", "littledesc" : "", "owner" : { "_id" : "1", "username" : "wizif" }, "price" : 0, "type" : "", "pic" : "" },
@@ -69,7 +72,7 @@ export function Home(props){
                         <h4 className={classes.boldFonts}>
                             پیشنهاد های ویژه
                         </h4>
-                        <SlideShow disNavButton images={background}/>
+                        <SlideShow disNavButton images={background1}/>
                     </Grid>
                     <Grid style={{width:'45%'}} item>
                         <Grid style={{justifyContent:'center'}} container>
