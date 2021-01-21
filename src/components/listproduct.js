@@ -59,9 +59,12 @@ export function ProductList(props){
                                     {props.panel ? (
                                         ''
                                     ):(
-                                         <Grid item>
-                                         <BuyButton book={item}/>
-                                     </Grid>
+                                        <Grid item>
+                                            {
+                                                props.buyer ? (<BuyButton buyer book={item}/>):(<BuyButton book={item}/>)
+                                            }
+                                        
+                                    </Grid> 
                                     )}
                                     
                                     <Grid item>
