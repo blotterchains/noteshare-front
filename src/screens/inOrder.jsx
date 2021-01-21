@@ -2,7 +2,8 @@ import { Box, Button, Divider, Grid } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { borderRadius, myStyles } from '../global/gbvars';
+import {StyleRoot} from 'radium';
+import { animationStyles, borderRadius, fetchapiWithotToken, myStyles } from '../global/gbvars';
 function RenderItems(props){
     const classes=myStyles()
     console.log(props)
@@ -151,6 +152,8 @@ export function InOrder(props){
                 <div
                 className={classes.root}
                 >
+                    <StyleRoot>
+                        
                     
                     <Box
                     boxShadow={3}
@@ -164,13 +167,16 @@ export function InOrder(props){
                         
                         <Grid dir='rtl' container>
                             <Grid style={{width:'50%'}} item>
-                            <div dir='rtl'>
+                            <div style={animationStyles.fadeInLeft} dir='rtl'>
                                 <RenderItems
                                 setOrders={setOrders} orders={orders}
                                 />
                             </div>
                             </Grid>
                             <Grid style={{width:'30%'}} item>
+                                <div
+                                style={animationStyles.fadeInRight}
+                                >
                                 <Box
                                 borderRadius={borderRadius}
                                 boxShadow={3}
@@ -179,18 +185,29 @@ export function InOrder(props){
                                 >
                                     <CheckOut orders={orders}/>
                                     <Button 
-                                    onClick={()=>history.push('/buy')}
+                                    onClick={()=>{
+                                        fetchapiWithotToken({
+                                            buys:JSON.parse(localStorage['checkout']),
+                                            token:localStorage['usertoken']
+                                        },"login-order")
+                                        .then(res=>{
+                                            alert(res)
+                                            window.open('http://localhost:5000/dargah/'+res)
+                                        })
+                                    }}
                                     color='secondary'>
                                         پرداخت
                                     </Button>
                                 </Box>
+                                </div>
+                                
                                 
                             </Grid>
                         </Grid>
                         
                     
                     </Box>
-                    
+                    </StyleRoot>
                 </div>
             )
         }else{
