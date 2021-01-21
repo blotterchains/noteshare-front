@@ -23,7 +23,7 @@ export function AllBook(props){
         .then(response=>setSearchList(response))
     }
     const handleLast=(page)=>{
-        fetchapiWithotToken({limit:10,page:page},'find-books')
+        fetchapiWithotToken({limit:10,page:page,type:'book'},'find-books')
         .then(response=>{
             response.map((item,index)=>{
                 if(index===0 || index%2===0){
@@ -41,16 +41,13 @@ export function AllBook(props){
         handleLast(page);
         let scroll=0;
         let timer=null
-        window.addEventListener('scroll',()=>{
+        const onScroll=()=>{
             const last = document.getElementById("end");
-            console.log()
-
+            console.log('s')
             if(window.scrollY>last.offsetTop-(last.offsetTop-window.scrollMaxY)*2-(last.offsetTop-window.scrollMaxY)/2){
                 if(scroll+600<window.scrollY){
                     timer=setTimeout(()=>{
-                        // 
                         
-                        // alert('aha')
                         handleLast(page+1)
                         page++
                         scroll=window.scrollY
@@ -59,8 +56,11 @@ export function AllBook(props){
                 }
                 
             }
-        })
+        }
+        window.addEventListener('scroll',onScroll)
         return () => {
+            window.removeEventListener('scroll',onScroll)
+
         }
     }, [])
    
