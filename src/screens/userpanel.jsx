@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleRoot} from 'radium'
 import { animationStyles,borderRadius, fetchapiWithotToken, fileToBase64, myStyles, uploader } from '../global/gbvars';
 import { Box, Button, Grid, MenuItem, Select, TextField, } from '@material-ui/core';
-import { AddBox, CheckOutlined, Close, Delete, Email, Home, Money, Publish, Receipt, SendOutlined, SupervisorAccountOutlined } from '@material-ui/icons';
+import { AddBox, CheckOutlined, Close, Delete, Email, ExitToAppOutlined, Home, Money, Publish, Receipt, SendOutlined, SupervisorAccountOutlined } from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import { ProductList } from '../components/listproduct';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -49,15 +49,7 @@ export function EditBook(props){
     const classes=myStyles();
     console.log(props.book)
     const [data,setData]=React.useState(
-            {
-                "token":localStorage['usertoken'],
-                 "author": "",
-                 "description": "",
-                 "littledesc": "",
-                 "name": "",
-                 "pages": 0,
-                 "price": 0,
-            }
+            props.book
         )
     const [author,setAuthor]=React.useState(props.book.author ? props.book.author:"");
     const [description,setDescription]=React.useState(props.book.description||"");    
@@ -69,8 +61,19 @@ export function EditBook(props){
     const [images,setImages]=React.useState(props.book.images||[]);
     const [url,setUrl]=React.useState(props.book.url||'');
     const [loaded,setLoaded]=React.useState(false)
-    console.log(data)
-    
+    const handleSendNewBook=()=>{
+        data.token=localStorage['usertoken']
+        fetchapiWithotToken(data,'books-updatebook')
+                    .then(res=>{
+                        if(res._id){
+                            alert('تغییرات اعمال شد');
+                            window.location.reload();
+                        }else{
+                            alert(res)
+                        }
+                        
+                    })
+    }    
     const handleData=(name,text)=>{
         switch(name){
             case 'author':
@@ -123,21 +126,20 @@ export function EditBook(props){
             case 'send':
                 setData(data=>{
                     data.littledesc = data.description.slice(0,150)+'...';
-                    if(data.price===0||data.price===''){
+                    if(data.price===0||data.price==='' || data.price===null){
                         data.price='free';
                         data={...data,url:url,images:images,type:type};
+                        
                         return data
                     }else{
                         data.price=parseInt(data.price);
                         data={...data,url:url,images:images,type:type}
-                        console.log(data)
+                        
                         return(data)
                     }
                    
                 })
-                fetchapiWithotToken(data,'books-newbook')
-                .then(res=>console.log(res))
-
+                handleSendNewBook()
                 break;
         }
         
@@ -393,20 +395,36 @@ export function NewBook(props){
             case 'send':
                 setData(data=>{
                     data.littledesc = data.description.slice(0,150)+'...';
-                    if(data.price===0||data.price===''){
+                    if(data.price===0||data.price==='' || data.price===null){
                         data.price='free';
                         data={...data,url:url,images:images,type:type};
+                        fetchapiWithotToken(data,'books-newbook')
+                            .then(res=>{
+                                if(res._id){
+                                    alert('کتاب اضافه شد')
+                                }else{
+                                    alert(res)
+                                }
+                                
+                            })
                         return data
                     }else{
                         data.price=parseInt(data.price);
                         data={...data,url:url,images:images,type:type}
-                        console.log(data)
+                        fetchapiWithotToken(data,'books-newbook')
+                        .then(res=>{
+                            if(res._id){
+                                alert('کتاب اضافه شد')
+                            }else{
+                                alert(res)
+                            }
+                            
+                        })                        
                         return(data)
                     }
                    
                 })
-                fetchapiWithotToken(data,'books-newbook')
-                .then(res=>console.log(res))
+                
 
                 break;
         }
@@ -513,6 +531,7 @@ export function NewBook(props){
                         onChange={(e)=>{
                             let input= document.getElementById('image')
                             handleConvert(input)
+
                             .then(response=>{
                                 uploader(response)
                                 .then(response=>handleData('images',response.url))
@@ -529,11 +548,12 @@ export function NewBook(props){
                             let input= document.getElementById('pdf')
                             handleConvert(input)
                             .then(response=>{
+                                console.log(response)
                                 uploader(response)
                                 .then(response=>handleData('url',response.url))
                             })
                         }}
-                        accept='.pdf'
+                        accept='.pdf,.mp3'
                         id='pdf' 
                         name='file'
                         type='file'
@@ -663,7 +683,9 @@ function UserHome(props){
                         <Grid item
                         style={{width:'30%'}}
                         >
-                            <Button>
+                            <Button
+                            onClick={()=>props.setScreen('buys')}
+                            >
                             <div>
                                    <Box
                                 top={0}
@@ -679,7 +701,7 @@ function UserHome(props){
                                      <p 
                                     style={{fontSize:'0.8rem',width:'60%'}}
                                     className={classes.descriptionFonts}>
-                                        37 
+                                        {props.userInfo.transaction.filter(n=>!n.status).length}
                                         <br/>
                                         کتاب خریداری شده                                   
                                         </p>
@@ -699,7 +721,10 @@ function UserHome(props){
                         style={{width:'30%'}}
 
                         >
-                                <Button>
+                                <Button
+                                onClick={()=>props.setScreen('sold')}
+                                style={{borderRadius:''}}
+                                >
                                 <Box
                                 top={0}
                                 left={0}
@@ -714,9 +739,9 @@ function UserHome(props){
                                      <p 
                                     style={{fontSize:'0.8rem',width:'60%'}}
                                     className={classes.descriptionFonts}>
-                                        37 
+                                        {props.userInfo.transaction.filter(n=>n.status).length}
                                         <br/>
-                                        کتاب فروخته شده                                    
+                                        کتاب آماده پرداخت                                    
                                         </p>
                                 </Box>
                                 <CircularProgress 
@@ -749,7 +774,7 @@ function UserHome(props){
                                     <p 
                                     style={{fontSize:'0.8rem',width:'60%'}}
                                     className={classes.descriptionFonts}>
-                                        37 
+                                        {props.userInfo.books.length}
                                         <br/>
                                         محتوا بازگذاری شده
                                     </p>
@@ -772,7 +797,7 @@ function UserHome(props){
     )
 }
 export function UserPanel(props){
-    const [userInfo,setUserInfo]=React.useState({});
+    const [userInfo,setUserInfo]=React.useState({transaction:[],books:[]});
     const [screen,setScreen]=React.useState('home');
     const history=useHistory()
     const classes=myStyles()
@@ -854,13 +879,19 @@ export function UserPanel(props){
                                              
                                         </Button>
                                         <br/>
-                                        <Button>
+                                       
+                                        <Button
+                                        onClick={()=>{
+                                            localStorage.removeItem('usertoken')
+                                            history.push('/login')
+                                        }}
+                                        >
                                             <Grid container>
                                                 <Grid item>
-                                                    <Receipt/>
+                                                    <ExitToAppOutlined/>
                                                 </Grid>
                                                 <Grid item>
-                                                    تراکنش های من
+                                                    خروج
                                                 </Grid>
                                             </Grid>
                                         </Button>
@@ -896,6 +927,42 @@ export function UserPanel(props){
                                         <ProductList 
                                         panel 
                                         list={userInfo.books}/>
+                                        </Box>
+                                        </div>
+                                    ):('')
+                                }
+                                {
+                                    screen==='buys' ? (
+                                        <div style={animationStyles.fadeInLeft}>
+                                             <Box 
+                                        boxShadow={3} 
+                                        borderRadius={borderRadius}
+                                        className={classes.innerRoot}>
+                                        <ProductList 
+                                        buyer
+                                        list={userInfo.transaction.filter((n)=>!n.status)}/>
+                                        </Box>
+                                        </div>
+                                    ):('')
+                                }
+                                {
+                                    screen==='sold' ? (
+                                        <div style={animationStyles.fadeInLeft}>
+                                             <Box 
+                                        boxShadow={3} 
+                                        borderRadius={borderRadius}
+                                        className={classes.innerRoot}>
+                                            <Button
+                                            onClick={()=>{
+                                                fetchapiWithotToken({"token":localStorage['usertoken']},"login-cashout")
+                                                .then(res=>console.log(res))
+                                            }}
+                                            >
+                                                درخواست پرداخت
+                                            </Button>
+                                        <ProductList 
+                                        buyer
+                                        list={userInfo.transaction.filter((n)=>n.status)}/>
                                         </Box>
                                         </div>
                                     ):('')
