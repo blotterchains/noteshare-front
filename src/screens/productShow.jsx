@@ -238,7 +238,7 @@ export function ProductShow(props){
                                 
                             </Box>
                             {
-                                 localStorage['userToken'] ? (
+                                 localStorage['usertoken'] ? (
                                          <Grid container>
                                              <Grid style={{width:'70%'}} item>
                                                 <TextField 
