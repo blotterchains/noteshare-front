@@ -9,6 +9,11 @@ import {UserPanel} from '../screens/userpanel.jsx';
 import TopNav, { TopNavRight } from './topnav';
 import { ProductShow } from '../screens/productShow.jsx';
 import { InOrder } from '../screens/inOrder.jsx';
+import { AllVCBook } from '../screens/allvcbook.jsx';
+import { AllNotes } from '../screens/allnotes.jsx';
+import { States } from './states.js';
+import { Buy } from '../screens/buy.jsx';
+import { myStyles } from '../global/gbvars.js';
 const useStyles=makeStyles({
     root:{
         width: '50%'
@@ -28,6 +33,14 @@ const screens=[
         render:<AllBook/>
     },
     {
+        path:'/vcbook',
+        render:<AllVCBook/>
+    },
+    {
+        path:'/note',
+        render:<AllNotes/>
+    },
+    {
         path:'/login',
         render:<Login/>
     },
@@ -38,12 +51,21 @@ const screens=[
     {
         path:'/order',
         render:<InOrder/>
-    }
+    },
 ]
 export function Routes(){
     const classes=useStyles();
+    const classes1=myStyles();
+    const [orders,setOrders]=React.useState(JSON.parse(localStorage['checkout']));
     function HandleRoutes(){
-        return(screens.map((i,k)=><Route exact path={i.path} render={(props)=>i.render}></Route>))
+        return(screens.map((i,k)=><Route exact path={i.path} render={(props)=>{
+            return(
+                
+            i.render
+            
+                
+            )
+            }}></Route>))
         
     }
     return(
@@ -52,13 +74,18 @@ export function Routes(){
             <TopNav/>
                 
                 <Divider />
-                <HandleRoutes/>
+                
+                 <HandleRoutes/>
+               
                 <Route exact path='/:hash/active' render={(props)=><ActiveNewAcc {...props}/>}></Route>
                 <Route exact path='/:username/:hash/book' render={(props)=><ProductShow {...props}/>}></Route>
-                <div style={{height:'10vh',width:'5vw',backgroundColor:'red'}} id='end'/>
-                <Box style={{height:'40vh'}}>
-    
-                </Box>
+                <Route exact path='/buy/:status' render={(props)=><Buy {...props}/>}></Route>
+                <div style={{height:'10vh',width:'100%',backgroundColor:'black'}} id='end'>
+                    <p className={classes1.boldFonts}>
+                    noteshare copyright
+                    </p>
+                    
+                </div>
             </div>
                    
         </Router>
