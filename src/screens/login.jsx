@@ -135,6 +135,10 @@ export function Login(props){
             
         }
     }
+    const history=useHistory();
+    if(localStorage['usertoken']){
+        history.push('/profile')
+    }
     useEffect(()=>{handleTimeToShow()},[])
     return(
         <Box className={classes.root}>
